@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>付浩宇专属 · 冬日视频播放器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f1626, #2c3e50);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        <!-- 顶部专属导航栏 -->
+        .navbar {
+            background-color: rgba(15, 22, 38, 0.9);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0, 20, 50, 0.5);
+            position: relative;
+            z-index: 100;
+        }
+        .navbar-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #e0f7fa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .navbar-logo::before {
+            content: "❄️";
+            font-size: 24px;
+        }
+        .navbar-logo span {
+            color: #4fc3f7;
+        }
+        .navbar-menu {
+            display: flex;
+            gap: 30px;
+        }
+        .navbar-item {
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+        .navbar-item:hover {
+            background-color: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+        }
+        .navbar-item.active {
+            background-color: #4fc3f7;
+            color: #0f1626;
+            font-weight: 600;
+        }
+
+        <!-- 主体内容区 -->
+        .main-wrapper {
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        <!-- 专属标题栏 -->
+        .title-section {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .main-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e0f7fa;
+            margin-bottom: 8px;
+        }
+        .sub-title {
+            font-size: 16px;
+            color: rgba(224, 247, 250, 0.7);
+        }
+
+        <!-- 视频+特效容器 -->
+        .video-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(15, 22, 38, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 20, 50, 0.6);
+            overflow: hidden;
+            position: relative;
+        }
+
+        <!-- 视频控制头部 -->
+        .video-header {
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(28, 40, 65, 0.9);
+            border-bottom: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        .video-name {
+            font-size: 18px;
+            color: #e0f7fa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .video-name::after {
+            content: "专属内容";
+            font-size: 12px;
+            padding: 2px 8px;
+            background-color: #4fc3f7;
+            color: #0f1626;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+        .control-btns {
+            display: flex;
+            gap: 12px;
+        }
+        .custom-btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4fc3f7;
+            color: #0f1626;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .custom-btn:hover {
+            background-color: #81d4fa;
+            transform: translateY(-2px);
+        }
+        .custom-btn.outline {
+            background-color: transparent;
+            border: 1px solid #4fc3f7;
+            color: #4fc3f7;
+        }
+        .custom-btn.outline:hover {
+            background-color: rgba(79, 195, 247, 0.2);
+        }
+
+        <!-- 核心视频+雪花容器 -->
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        <!-- 雪花特效层（悬浮视频上方） -->
+        .snow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        <!-- 专属雪花样式 -->
+        .snowflake {
+            position: absolute;
+            background: linear-gradient(white, #e0f7fa);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snowfall linear infinite;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+        <!-- 雪花飘落动画 -->
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-15px) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.8;
+                transform: translateY(20px) rotate(45deg) scale(1);
+            }
+            85% {
+                opacity: 0.8;
+                transform: translateY(550px) rotate(315deg) scale(1);
+            }
+            100% {
+                transform: translateY(600px) rotate(360deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        <!-- 底部专属标识栏 -->
+        .footer {
+            padding: 15px 40px;
+            background-color: rgba(15, 22, 38, 0.9);
+            text-align: center;
+            font-size: 14px;
+            color: rgba(224, 247, 250, 0.6);
+            margin-top: auto;
+        }
+        .footer span {
+            color: #4fc3f7;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <div class="navbar">
+        <div class="navbar-logo">❄️ 付浩宇<span>专属播放器</span></div>
+        <div class="navbar-menu">
+            <div class="navbar-item active">首页</div>
+            <div class="navbar-item">我的视频</div>
+            <div class="navbar-item">特效管理</div>
+            <div class="navbar-item">设置</div>
+        </div>
+    </div>
+
+    <!-- 主体内容 -->
+    <div class="main-wrapper">
+        <!-- 专属标题 -->
+        <div class="title-section">
+            <h1 class="main-title">付浩宇专属 · 冬日雪花特效视频</h1>
+            <p class="sub-title">自定义雪花密度 | 专属UI界面 | 沉浸式播放体验</p>
+        </div>
+
+        <!-- 视频播放器区域 -->
+        <div class="video-wrapper">
+            <!-- 视频控制头部 -->
+            <div class="video-header">
+                <div class="video-name">冬日限定视频</div>
+                <div class="control-btns">
+                    <button class="custom-btn" id="startSnow">开启雪花</button>
+                    <button class="custom-btn outline" id="stopSnow">关闭雪花</button>
+                    <button class="custom-btn outline" id="denseSnow">雪花加密</b
